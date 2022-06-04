@@ -4,7 +4,7 @@
 FROM python:3.6-slim
 
 # Identify maintainer
-LABEL maintainer = "calbon@wikimedia.org"
+LABEL maintainer = "anna.mamchyts18@gmail.com"
 
 # Set the default working directory
 WORKDIR /app/
@@ -16,13 +16,13 @@ COPY requirements.txt /app/
 # Install required packages
 RUN pip install -r ./requirements.txt
 
-# Copy app.py, train.py and__init__.py outside the container
+# Copy app.py and__init__.py outside the container
 # to /app/ inside the container
-COPY app.py __init__.py train.py /app/
+COPY app.py __init__.py /app/
 
-# Run model.pkl outside the container
+# Copy model.pkl outside the container
 # to /app/ inside the container
-RUN python train.py
+COPY model.pkl /app/
 
 # Expose the container's port 3333
 EXPOSE 3333
