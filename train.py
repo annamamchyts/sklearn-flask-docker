@@ -6,7 +6,15 @@ from sklearn.externals import joblib
 
 import numpy as np
 
+# Load the iris data
+iris = datasets.load_iris()
+
+# Create a matrix, X, of features and a vector, y.
+X, y = iris.data, iris.target
+
+# Define a Perceptron class
 class Perceptron:
+    
     def __init__(self, eta=0.01, n_iter=10):
         self.eta = eta
         self.n_iter = n_iter
@@ -24,25 +32,20 @@ class Perceptron:
             self.errors_.append(errors)
         return self
     
-    
+ 
     def net_input(self, X):
         return np.dot(X, self.w_[1:]) + self.w_[0]
     
     def predict(self, X):
         return np.where(self.net_input(X) >= 0, 1, -1)
       
-# Load the iris data
-iris = datasets.load_iris()
 
-# Create a matrix, X, of features and a vector, y.
-X, y = iris.data, iris.target
-
-# Train a naive logistic regression model
-clf = LogisticRegression(random_state=0, solver='liblinear', multi_class='auto')
-clf.fit(X, y)
+# New model
+newmodel = Perceptron()
+newmodel.fit(X, y)
 
 # Save the trained model as a pickle string.
-saved_model = pickle.dumps(clf)
+saved_model = pickle.dumps(newmodel)
 
 # Save the model as a pickle in a file
 joblib.dump(clf, 'model.pkl')
