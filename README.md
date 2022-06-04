@@ -1,61 +1,59 @@
 # sklearn-flask-docker
-An example of deploying a sklearn model using Flask using a Docker container.
 
-This tutorial requires basic Docker knowledge.
+Wdrożenie modelu sklearn przy użyciu "Flask" + przy użyciu kontenera "Docker".
 
-## Steps:
+## Kroki:
 
-## 1. Train The Model
-
-For this example we are training a toy model using Iris training dataset. To train a new model, run this:
+## 1. Trenowanie modelu
+Aby wytrenować nowy model, należy uruchomić to:
 
 `python train.py`
 
-This outputs a pickle model in a file named `model.pkl`.
+Outputem jest model pikle w pliku o nazwie `model.pkl`.
 
-## 2. Build A Docker Image Containing Flask And The Model
+## 2. Budowa obrazu Docker
 
-Construct an image (`docker build`) called chrisalbon/sklearn-flask-docker (`--tag chrisalbon/sklearn-flask-docker`) from the Dockerfile (`.`).
+Skonstruowanie obrazu (`docker build`) o nazwie chrisalbon/sklearn-flask-docker (`--tag chrisalbon/sklearn-flask-docker`) z Dockerfile (`.`).
 
-The construction of this image is defined by `Dockerfile`.
+Konstrukcja tego obrazu jest określona przez `Dockerfile`.
 
 `docker build --tag chrisalbon/sklearn-flask-docker .`
 
-## 3. Build A Container From The Docker Image
+## 3. Budowa kontenera z obrazu Docker
 
-Create and start (`docker run`) a detached (`-d`) Docker container called sklearn-flask-docker (`--name sklearn-flask-docker`) from the image `chrisalbon/sklearn-flask-docker:latest` where port of the host machine is connected to port 3333 of the Docker container (`-p 3000:3333`).
+Stwórz i rozpocznij (`docker run`) jako (`-d`) Kontener Docker o nazwie sklearn-flask-docker (`--name sklearn-flask-docker`) z obrazu `chrisalbon/sklearn-flask-docker:latest` gdzie port maszyny hosta jest połączony z portem 3333 kontenera Docker (`-p 3000:3333`).
 
 `docker run -p 3000:3333 -d --name sklearn-flask-docker chrisalbon/sklearn-flask-docker:latest`
 
-## 4. Query The Prediction API With An Example Observation
+## 4. Zapytanie Prediction API z przykładową obserwacją
 
-Since our model is trained on the Iris toy dataset, we can test the API by queries it for the predicted class for this example observation:
+Ponieważ nasz model jest szkolony na zestawie danych zabawek Iris, możemy przetestować API, wysyłając zapytanie o przewidywaną klasę dla tej przykładowej obserwacji:
 
 - sepal length = 4.5
 - sepal width = 2.3
 - petal length = 1.3
 - petal width = 0.3
 
-### In Your Browser
+### W przeglądarce
 
-Paste this URL into your browser bar:
+Należy wkleić ten adres URL do paska przeglądarki:
 
 `http://0.0.0.0:3000/api/v1.0/predict?sl=4.5&sw=2.3&pl=1.3&pw=0.3`
 
-In your browser you should see something like this:
+W przeglądarce powinno to wyglądać w następujący sposób:
 ```
 {"features":[4.5,2.3,1.3,0.3],"predicted_class":0}
 ```
 
-`"predicted_class":0` means that the predicted class is "Iris setosa"
+`"predicted_class":0` oznacza, że przewidywana klasa to "Iris setosa"
 
-### Using Curl
+### Za pomocą Curl
 
-Paste this URL into your terminal:
+Należy wkleić ten adres URL do paska przeglądarki:
 
 `curl -i "0.0.0.0:3000/api/v1.0/predict?sl=4.5&sw=2.3&pl=1.3&pw=0.3"`
 
-You should see something like this:
+W przeglądarce powinno to wyglądać w następujący sposób:
 ```
 HTTP/1.0 200 OK
 Content-Type: application/json
@@ -66,18 +64,18 @@ Date: Tue, 25 Aug 2020 20:29:41 GMT
 {"features":[4.5,2.3,1.3,0.3],"predicted_class":0}
 ```
 
-## Basic Docker Operations
+## Podstawowe operacje Docker
 
-You will need to use `sudo` for these commands, however best practice is to add your user to the `docker` group when in production.
+Będzie trzeba użyć `sudo` dla tych poleceń, jednak najlepszą praktyką jest dodanie użytkownika do `docker` grupy podczas pracy w środowisku produkcyjnym.
 
-### Start The Container
+### Uruchomienie kontenera
 
 `docker start sklearn-flask-docker`
 
-### Stop The Container
+### Zatrzymanie kontenera
 
 `docker stop sklearn-flask-docker`
 
-### Delete The Container
+### Żeby usunąć kontener
 
 `docker rm sklearn-flask-docker`
