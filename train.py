@@ -48,4 +48,4 @@ newmodel.fit(X, y)
 saved_model = pickle.dumps(newmodel)
 
 # Save the model as a pickle in a file
-joblib.dump(clf, 'model.pkl')
+joblib.dump(newmodel, 'model.pkl')
